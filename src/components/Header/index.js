@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 
 import { Container } from './styles';
 
-import logo from './../../assets/Star_Wars_Logo.svg'
+// import logo from './../../assets/Star_Wars_Logo.svg'
+import logo from './../../assets/star_wars_capa.png'
 
 export default function Header() {
     return(
