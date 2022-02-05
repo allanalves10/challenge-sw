@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useViewDetails } from '../../hooks/useViewDetails';
 
 import { DetailsColors, DetailsPerson } from './styles';
 
 function Details () {
     const { personSelected } = useViewDetails()
+    console.log(personSelected)
 
     const [personStarWars, setPersonStarWars] = useState(personSelected);
+
+    useEffect(() => {
+        setPersonStarWars(personSelected);
+    }, [personSelected])
 
     return (
         <>
