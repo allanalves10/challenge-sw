@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react"
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight, MdRemoveRedEye } from 'react-icons/md';
+import { 
+    MdKeyboardArrowLeft, 
+    MdKeyboardArrowRight,
+    MdOutlineClear,
+    MdRemoveRedEye 
+} from 'react-icons/md';
 import Api from "../../services/Api";
-import { HomeColors, MessageError, Pagination, PersonList } from './styles';
+import { ContainerSearch, HomeColors, MessageError, Pagination, PersonList } from './styles';
 import card from './../../assets/capa.jpg';
 import { useNavigate } from "react-router-dom";
 import { useViewDetails } from "../../hooks/useViewDetails"
@@ -12,33 +17,42 @@ function Home() {
     const { setPersonSelected } = useViewDetails();
 
     const [currentPosition, setCurrentPosition] = useState(1);
-    const [totalByPages, setTotalByPages] = useState(0);
+    const [inputNamePerson, setInputNamePerson] = useState('');
     const [isChangePage, setIsChangePage] = useState(false);
     const [personStarWars, setPersonStarWars] = useState([]);
+    const [typeSearchOrNormalPagination, setTypeSearchOrNormalPagination] = useState('normal');
+    const [totalByPages, setTotalByPages] = useState(0);
+
     const numberPerPageDefault = 10;
 
     useEffect(() => {
-        async function getPerson() {
-            try {
-                const { data } = await Api.get(`/people/?page=${currentPosition}`);
-                setTotalByPages(Math.ceil(data.count / numberPerPageDefault));
-                setPersonStarWars(data.results);
-            } catch (err) {
-                console.error(err);
-            }
-        }
-
-        getPerson()
+        getPerson();
     }, [])
+
+    async function getPerson() {
+        try {
+            const { data } = await Api.get(`/people/?page=${currentPosition}`);
+            setTotalByPages(Math.ceil(data.count / numberPerPageDefault));
+            setPersonStarWars(data.results);
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     async function nextPage() {
         setIsChangePage(true);
         
         if (currentPosition < totalByPages) {
             const newPosition = currentPosition + 1;
+            let routeToRequisition = `/people/?page=${newPosition}`;
             setCurrentPosition(newPosition);
+
+            if (typeSearchOrNormalPagination === 'search') {
+                routeToRequisition = `/people/?search=${inputNamePerson.trim()}&page=${newPosition}`;
+            }
+            
             try {
-                const { data } = await Api.get(`/people/?page=${newPosition}`);
+                const { data } = await Api.get(routeToRequisition);
                 setPersonStarWars(data.results);
                 setIsChangePage(false);
             } catch (err) {
@@ -47,7 +61,7 @@ function Home() {
             }
         } else {
             setIsChangePage(false);
-            toast.error('aqui bb');
+            toast.error('Erro ao alterar página.');
         }
         
     }
@@ -57,9 +71,15 @@ function Home() {
 
         if (currentPosition > 1) {
             const newPosition = currentPosition - 1;
+            let routeToRequisition = `/people/?page=${newPosition}`;
             setCurrentPosition(newPosition);
+
+            if (typeSearchOrNormalPagination === 'search') {
+                routeToRequisition = `/people/?search=${inputNamePerson.trim()}&page=${newPosition}`;
+            }
+
             try {
-                const { data } = await Api.get(`/people/?page=${newPosition}`);
+                const { data } = await Api.get(routeToRequisition);
                 setPersonStarWars(data.results);
                 setIsChangePage(false);
             } catch (err) {
@@ -68,7 +88,7 @@ function Home() {
             }
         } else {
             setIsChangePage(false);
-            toast.error('aqui bb');
+            toast.error('Erro ao alterar página.');
         }
     }
 
@@ -78,24 +98,49 @@ function Home() {
         navigate('/details');
     }
 
-    //Falta a lógica para buscar o produto e paginação para o mesmo
-    // async function findPerson() {
-    //     try {
-    //         const { data } = await Api.get('/people/?search=vader');
-    //         setPersonStarWars(data.results);
-    //         toast.success('Usuários encontrados com sucesso');
+    async function searchPerson() {
+        const termToSearchWithoutSpaceBegnningAndEnd = inputNamePerson.trim();
 
-    //     } catch (err) {
-    //         console.error(err);
-    //         toast.error('Erro ao pesquisar por usuários');
-    //     }
-    // }
+        if (termToSearchWithoutSpaceBegnningAndEnd.length === 0) {
+            return toast.error('Insira um nome válido.');
+        }
+
+        try {
+            const { data } = await Api.get(`/people/?search=${termToSearchWithoutSpaceBegnningAndEnd}&page=1`);
+            setCurrentPosition(1);
+            setTypeSearchOrNormalPagination('search');
+            setPersonStarWars(data.results);
+            setTotalByPages(Math.ceil(data.count / numberPerPageDefault));
+            toast.success(`${data.count} usuário(s) encontrados com sucesso.`);
+
+        } catch (err) {
+            console.error(err);
+            toast.error('Erro ao pesquisar por usuário(s).');
+        }
+    }
+
+    function clearSearchPerson() {
+        setInputNamePerson('');
+        setCurrentPosition(1);
+        setTypeSearchOrNormalPagination('normal');
+        getPerson();
+    }
 
     return(
         <>
             <HomeColors>
                 Lista de Personagens
             </HomeColors>
+
+            <ContainerSearch>
+                <input 
+                    onChange={(e) => setInputNamePerson(e.target.value)} 
+                    placeholder="Insira o nome do personagem"
+                    value={inputNamePerson} 
+                />
+                {typeSearchOrNormalPagination === 'search' && <button id="clearButton" onClick={clearSearchPerson}><MdOutlineClear size={20}/></button>}
+                <button onClick={searchPerson}>Buscar</button>
+            </ContainerSearch>
 
             <PersonList>
                 {!!personStarWars.length && personStarWars.map(person => (
@@ -105,6 +150,7 @@ function Home() {
                         <h3>Nascimento: {person.birth_year || ''}</h3>
                         <h3>Altura: {person.height || ''} cm</h3>
                         <h3>Cor dos Olhos: {person.eye_color || ''}</h3>
+                        <br/>
                         <button type="button" onClick={() => viewDetails(person)}>
                             <div>
                                 <MdRemoveRedEye size={30} style={{color: 'gold'}}/>
@@ -120,11 +166,11 @@ function Home() {
             {totalByPages > 0 && (
                 <Pagination>
                     <button onClick={previousPage} disabled={isChangePage}>
-                        <MdKeyboardArrowLeft size={50} style={{color: 'gold'}} />
+                        <MdKeyboardArrowLeft size={50} style={{color: '#00BFFF'}} />
                     </button>
                     <p>{currentPosition} de {totalByPages}</p>
                     <button onClick={nextPage} disabled={isChangePage}>
-                        <MdKeyboardArrowRight size={50} style={{color: 'gold'}} />
+                        <MdKeyboardArrowRight size={50} style={{color: '#00BFFF'}} />
                     </button>
                 </Pagination>
             )}

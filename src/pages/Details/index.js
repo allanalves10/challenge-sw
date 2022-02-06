@@ -4,8 +4,7 @@ import { useViewDetails } from '../../hooks/useViewDetails';
 import { DetailsColors, DetailsPerson } from './styles';
 
 function Details () {
-    const { personSelected } = useViewDetails()
-    console.log(personSelected)
+    const { personSelected } = useViewDetails();
 
     const [personStarWars, setPersonStarWars] = useState(personSelected);
 
