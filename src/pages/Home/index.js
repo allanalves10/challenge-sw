@@ -18,7 +18,8 @@ function Home() {
 
     const [currentPosition, setCurrentPosition] = useState(1);
     const [inputNamePerson, setInputNamePerson] = useState('');
-    const [isChangePage, setIsChangePage] = useState(false);
+    const [isChangePagePrevious, setIsChangePagePrevious] = useState(true);
+    const [isChangePageNext, setIsChangePageNext] = useState(false);
     const [personStarWars, setPersonStarWars] = useState([]);
     const [typeSearchOrNormalPagination, setTypeSearchOrNormalPagination] = useState('normal');
     const [totalByPages, setTotalByPages] = useState(0);
@@ -40,7 +41,7 @@ function Home() {
     }
 
     async function nextPage() {
-        setIsChangePage(true);
+        setIsChangePageNext(true);
         
         if (currentPosition < totalByPages) {
             const newPosition = currentPosition + 1;
@@ -54,20 +55,27 @@ function Home() {
             try {
                 const { data } = await Api.get(routeToRequisition);
                 setPersonStarWars(data.results);
-                setIsChangePage(false);
+
             } catch (err) {
                 console.error(err);
-                setIsChangePage(false);
+
+            } finally {
+                if (newPosition !== totalByPages) {
+                    setIsChangePageNext(false);
+
+                }
+
+                setIsChangePagePrevious(false);
+
             }
         } else {
-            setIsChangePage(false);
-            toast.error('Erro ao alterar página.');
+            setIsChangePagePrevious(false);
         }
         
     }
 
     async function previousPage() {
-        setIsChangePage(true);
+        setIsChangePagePrevious(true);
 
         if (currentPosition > 1) {
             const newPosition = currentPosition - 1;
@@ -81,14 +89,21 @@ function Home() {
             try {
                 const { data } = await Api.get(routeToRequisition);
                 setPersonStarWars(data.results);
-                setIsChangePage(false);
+
             } catch (err) {
                 console.error(err);
-                setIsChangePage(false);
+
+            } finally {
+                if (newPosition !== 1) {
+                    setIsChangePagePrevious(false);
+
+                }
+
+                setIsChangePageNext(false);
+
             }
         } else {
-            setIsChangePage(false);
-            toast.error('Erro ao alterar página.');
+            setIsChangePageNext(false);
         }
     }
 
@@ -165,12 +180,12 @@ function Home() {
             
             {totalByPages > 0 && (
                 <Pagination>
-                    <button onClick={previousPage} disabled={isChangePage}>
-                        <MdKeyboardArrowLeft size={50} style={{color: '#00BFFF'}} />
+                    <button onClick={previousPage} disabled={isChangePagePrevious}>
+                        <MdKeyboardArrowLeft size={50} style={{color: !isChangePagePrevious ? '#00BFFF' : 'gray'}} />
                     </button>
                     <p>{currentPosition} de {totalByPages}</p>
-                    <button onClick={nextPage} disabled={isChangePage}>
-                        <MdKeyboardArrowRight size={50} style={{color: '#00BFFF'}} />
+                    <button onClick={nextPage} disabled={isChangePageNext}>
+                        <MdKeyboardArrowRight size={50} style={{color: !isChangePageNext ? '#00BFFF' : 'gray'}} />
                     </button>
                 </Pagination>
             )}

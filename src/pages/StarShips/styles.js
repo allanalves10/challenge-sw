@@ -8,7 +8,7 @@ export const DetailsColors = styled.h1`
     font-weight: bold;
 `;
 
-export const DetailsPerson = styled.ul`
+export const DetailsStarShips = styled.ul`
     display: flex;
     justify-content: center;
     background: gold;
@@ -24,18 +24,7 @@ export const DetailsPerson = styled.ul`
     }
 
     h3 {
-        font-size: 1rem;
         font-weight: bold;
         text-align: center;
-    }
-    
-    a {
-        font-size: 1rem;
-        font-weight: bold;
-        text-align: center;
-
-        &:hover {
-            text-decoration: underline;
-        }
     }
 `;

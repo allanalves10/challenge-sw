@@ -20,10 +20,15 @@ export const Pagination = styled.div`
     justify-content: center;
     align-items: center;
     font-size: 20px;
+    margin-bottom: 2rem;
 
     button {
         background: transparent;
         border-color: transparent;
+
+        &:disabled {
+            cursor: not-allowed;
+        }
     }
 
     p {
