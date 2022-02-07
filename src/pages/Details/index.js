@@ -6,7 +6,7 @@ import { useViewFilms } from '../../hooks/useViewFilms';
 import { useViewStarShips } from '../../hooks/useViewStarShips';
 import { useViewVehicles } from '../../hooks/useViewVehicles';
 
-import { DetailsColors, DetailsPerson } from './styles';
+import { DetailsDescription, DetailsPerson, ReturnButtonDetails } from './styles';
 
 function Details () {
     const navigate = useNavigate();
@@ -105,35 +105,58 @@ function Details () {
 
     return (
         <>
-            <DetailsColors>
+            <DetailsDescription>
                 Detalhes do Personagem
-            </DetailsColors>
+            </DetailsDescription>
             <DetailsPerson>
-                <li key={personStarWars.name}>
-                    <h3>Nome: {personStarWars.name}</h3>
-                    <h3>Data de Nascimento: {personStarWars.birth_year !== 'unknown'? personStarWars.birth_year : 'Não Informado'}</h3>
-                    <h3>Gênero: {personStarWars.gender !== 'n/a' ? personStarWars.gender : 'Não Informado'}</h3>
-                    <h3>Altura: {personStarWars.height}cm</h3>
-                    <h3>Peso: {personStarWars.mass}Kg</h3>
-                    <h3>Cor do Cabelo: {personStarWars.hair_color !== 'n/a' ? personStarWars.hair_color : 'Não Informado'}</h3>
-                    <h3>Cor dos Olhos: {personStarWars.eye_color !== 'n/a' ? personStarWars.eye_color : 'Não Informado'}</h3>
-                    <h3>Cor da Pele: {personStarWars.skin_color !== 'n/a' ? personStarWars.skin_color : 'Não Informado'}</h3>
-                    {!!listFilms && <h3>Filmes</h3>}
-                    {!!listFilms.length && listFilms.map(film => (
+                <li>
+                    <div></div>
+                    <h2>Dados</h2>
+                    <p>Nome: {personStarWars.name}</p>
+                    <p>Data de Nascimento: {personStarWars.birth_year !== 'unknown'? personStarWars.birth_year : 'Não Informado'}</p>
+                    <p>Gênero: {personStarWars.gender !== 'n/a' ? personStarWars.gender : 'Não Informado'}</p>
+                    <p>Altura: {personStarWars.height}cm</p>
+                    <p>Peso: {personStarWars.mass}Kg</p>
+                    <p>Cor do Cabelo: {personStarWars.hair_color !== 'n/a' ? personStarWars.hair_color : 'Não Informado'}</p>
+                    <p>Cor dos Olhos: {personStarWars.eye_color !== 'n/a' ? personStarWars.eye_color : 'Não Informado'}</p>
+                    <p>Cor da Pele: {personStarWars.skin_color !== 'n/a' ? personStarWars.skin_color : 'Não Informado'}</p>
+                </li>
+                
+                <li>
+                    <div></div>
+                    <h2>Filmes</h2>
+                    { listFilms.map(film => (
                         <a key={film.title} onClick={() => viewFilms(film)} style={{cursor: 'pointer'}}>{film.title}</a>
                     ))}
-                    {!!listStarShips && <h3>Naves Espaciais</h3>}
+                    {!listFilms.length && (
+                        <span>Este personagem não possui filme!</span>
+                    )}
+                </li>
+
+                <li>
+                    <div></div>
+                    <h2>Naves Espaciais</h2>
                     {!!listStarShips.length && listStarShips.map(starship => (
                         <a key={starship.name} onClick={() => viewStarShips(starship)} style={{cursor: 'pointer'}}>{starship.name}</a>
                     ))}
-                    {!!listVehicles && <h3>Veículos</h3>}
+                    {!listStarShips.length && (
+                        <span>Este personagem não possui nave espacial!</span>
+                    )}
+                </li>
+
+                <li>
+                    <div></div>
+                    <h2>Veículos</h2>
                     {!!listVehicles.length && listVehicles.map(vehicle => (
                         <a key={vehicle.name} onClick={() => viewVehicle(vehicle)} style={{cursor: 'pointer'}}>{vehicle.name}</a>
                     ))}
-
+                    {!listVehicles.length && (
+                        <span>Este personagem não possui veículo!</span>
+                    )}
                 </li>
+
             </DetailsPerson>
-            {/* Falta um Botão de Voltar */}
+            <ReturnButtonDetails to='/'>Voltar</ReturnButtonDetails>
         </>
     );
 }

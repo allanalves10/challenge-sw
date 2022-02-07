@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useViewFilms } from '../../hooks/useViewFilms';
-
-import { DetailsColors, DetailsFilms } from './styles';
+import { convertDate } from '../../utils/convertDate';
+import { DetailsDescription } from '../Details/styles';
+import { DetailsPerPerson, ReturnButton } from './styles';
 
 function Films() {
     const { filmSelected } = useViewFilms();
@@ -15,23 +16,22 @@ function Films() {
 
     return (
         <>
-            <DetailsColors>
+            <DetailsDescription>
                 Detalhes do Filme
-            </DetailsColors>
-            <DetailsFilms>
+            </DetailsDescription>
+            <DetailsPerPerson>
                 {film && (
                     <li key={film.title}>
-                        <h3>Nome: {film.title}</h3>
-                        {/* <h3>Data de Nascimento: {films.birth_year !== 'unknown'? films.birth_year : 'Não Informado'}</h3>
-                        <h3>Gênero: {films.gender !== 'n/a' ? films.gender : 'Não Informado'}</h3>
-                        <h3>Altura: {films.height}cm</h3>
-                        <h3>Peso: {films.mass}Kg</h3>
-                        <h3>Cor do Cabelo: {films.hair_color !== 'n/a' ? films.hair_color : 'Não Informado'}</h3>
-                        <h3>Cor dos Olhos: {films.eye_color !== 'n/a' ? films.eye_color : 'Não Informado'}</h3>
-                        <h3>Cor da Pele: {films.skin_color !== 'n/a' ? films.skin_color : 'Não Informado'}</h3> */}
+                        <p><b>Nome:</b> {film.title || ''}</p>
+                        <p><b>Abertura:</b> {film.opening_crawl || ''}</p>
+                        <p><b>Diretor:</b> {film.director}</p>
+                        <p><b>Produtor(a):</b> {film.producer}</p>
+                        <p><b>Data de Lançamento:</b> {convertDate(film.release_date)}</p>
+
+                        <ReturnButton to='/details'>Voltar</ReturnButton>
                     </li>
                 )}
-            </DetailsFilms>
+            </DetailsPerPerson>
         </>
     );
 }

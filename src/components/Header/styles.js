@@ -13,5 +13,10 @@ export const LinkStyles = styled(Link)`
     img {
         height: 250px;
         width: 500px;
+
+        @media (max-width: 768px) {
+            height: 120px;
+            width: 250px;
+        }
     }
 `

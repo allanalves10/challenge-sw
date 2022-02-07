@@ -6,11 +6,12 @@ import {
     MdRemoveRedEye 
 } from 'react-icons/md';
 import Api from "../../services/Api";
-import { ContainerSearch, HomeColors, MessageError, Pagination, PersonList } from './styles';
-import card from './../../assets/capa.jpg';
+import { ContainerSearch, MessageError, Pagination, PersonList } from './styles';
 import { useNavigate } from "react-router-dom";
 import { useViewDetails } from "../../hooks/useViewDetails"
 import { toast } from "react-toastify";
+import { DetailsDescription } from "../Details/styles";
+import { removeSpecialCharacters } from "../../utils/removeSpecialCharacters";
 
 function Home() {
     const navigate = useNavigate();
@@ -114,7 +115,7 @@ function Home() {
     }
 
     async function searchPerson() {
-        const termToSearchWithoutSpaceBegnningAndEnd = inputNamePerson.trim();
+        const termToSearchWithoutSpaceBegnningAndEnd = removeSpecialCharacters(inputNamePerson.trim());
 
         if (termToSearchWithoutSpaceBegnningAndEnd.length === 0) {
             return toast.error('Insira um nome válido.');
@@ -143,9 +144,9 @@ function Home() {
 
     return(
         <>
-            <HomeColors>
+            <DetailsDescription>
                 Lista de Personagens
-            </HomeColors>
+            </DetailsDescription>
 
             <ContainerSearch>
                 <input 
@@ -159,12 +160,11 @@ function Home() {
 
             <PersonList>
                 {!!personStarWars.length && personStarWars.map(person => (
-                    <li key={person.name} style={{backgroundImage: `url(${card})`, backgroundPosition: 'center', backgroundSize: 'cover',
-                    backgroundRepeat: 'no-repeat'}}>
-                        <h3>Nome: {person.name || ''}</h3>
-                        <h3>Nascimento: {person.birth_year || ''}</h3>
-                        <h3>Altura: {person.height || ''} cm</h3>
-                        <h3>Cor dos Olhos: {person.eye_color || ''}</h3>
+                    <li key={person.name}>
+                        <p>Nome: {person.name || ''}</p>
+                        <p>Nascimento: {person.birth_year || ''}</p>
+                        <p>Altura: {person.height || ''} cm</p>
+                        <p>Cor dos Olhos: {person.eye_color || ''}</p>
                         <br/>
                         <button type="button" onClick={() => viewDetails(person)}>
                             <div>

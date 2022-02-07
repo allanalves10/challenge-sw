@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useViewStarShips } from '../../hooks/useViewStarShips';
-
-import { DetailsColors, DetailsStarShips } from './styles';
+import { DetailsDescription } from '../Details/styles';
+import { DetailsPerPerson, ReturnButton } from '../Films/styles';
 
 function StarShips() {
     const { starShipSelected } = useViewStarShips();
@@ -15,23 +15,23 @@ function StarShips() {
 
     return (
         <>
-            <DetailsColors>
+            <DetailsDescription>
                 Detalhes da Nave Espacial
-            </DetailsColors>
-            <DetailsStarShips>
+            </DetailsDescription>
+            <DetailsPerPerson>
                 {starShip && (
                     <li key={starShip.name}>
-                        <h3>Nome: {starShip.name}</h3>
-                        {/* <h3>Data de Nascimento: {starShip.birth_year !== 'unknown'? starShip.birth_year : 'Não Informado'}</h3>
-                        <h3>Gênero: {starShip.gender !== 'n/a' ? starShip.gender : 'Não Informado'}</h3>
-                        <h3>Altura: {starShip.height}cm</h3>
-                        <h3>Peso: {starShip.mass}Kg</h3>
-                        <h3>Cor do Cabelo: {starShip.hair_color !== 'n/a' ? starShip.hair_color : 'Não Informado'}</h3>
-                        <h3>Cor dos Olhos: {starShip.eye_color !== 'n/a' ? starShip.eye_color : 'Não Informado'}</h3>
-                        <h3>Cor da Pele: {starShip.skin_color !== 'n/a' ? starShip.skin_color : 'Não Informado'}</h3> */}
+                        <p><b>Nome:</b> {starShip.name || '-'}</p>
+                        <p><b>Modelo:</b> {starShip.model || '-'}</p>
+                        <p><b>Custo em Créditos:</b> {starShip.cost_in_credits || '-'}</p>
+                        <p><b>Comprimento:</b> {starShip.length || '-'}</p>
+                        <p><b>Velocidade Máxima na Atmosfera:</b> {starShip.max_atmosphering_speed || '-'}</p>
+                        <p><b>Classe:</b> {starShip.starship_class || '-'}</p>
+
+                        <ReturnButton to='/details'>Voltar</ReturnButton>
                     </li>
                 )}
-            </DetailsStarShips>
+            </DetailsPerPerson>
         </>
     );
 }

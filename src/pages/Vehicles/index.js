@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useViewVehicles } from '../../hooks/useViewVehicles';
-
-import { DetailsColors, DetailsVehicles } from './styles';
+import { DetailsDescription } from '../Details/styles';
+import { DetailsPerPerson, ReturnButton } from '../Films/styles';
 
 function Vehicles() {
     const { vehicleSelected } = useViewVehicles();
@@ -15,24 +15,23 @@ function Vehicles() {
 
     return (
         <>
-            <DetailsColors>
+            <DetailsDescription>
                 Detalhes do Veículo
-            </DetailsColors>
-            <DetailsVehicles>
+            </DetailsDescription>
+            <DetailsPerPerson>
                 {vehicle && (
                     <li key={vehicle.name}>
-                        <h3>Nome: {vehicle.name}</h3>
-                        {/* <h3>Data de Nascimento: {vehicles.birth_year !== 'unknown'? vehicles.birth_year : 'Não Informado'}</h3>
-                        <h3>Gênero: {vehicles.gender !== 'n/a' ? vehicles.gender : 'Não Informado'}</h3>
-                        <h3>Altura: {vehicles.height}cm</h3>
-                        <h3>Peso: {vehicles.mass}Kg</h3>
-                        <h3>Cor do Cabelo: {vehicles.hair_color !== 'n/a' ? vehicles.hair_color : 'Não Informado'}</h3>
-                        <h3>Cor dos Olhos: {vehicles.eye_color !== 'n/a' ? vehicles.eye_color : 'Não Informado'}</h3>
-                        <h3>Cor da Pele: {vehicles.skin_color !== 'n/a' ? vehicles.skin_color : 'Não Informado'}</h3> */}
+                        <p><b>Nome:</b> {vehicle.name || '-'}</p>
+                        <p><b>Modelo:</b> {vehicle.model || '-'}</p>
+                        <p><b>Custo em Créditos:</b> {vehicle.cost_in_credits || '-'}</p>
+                        <p><b>Comprimento:</b> {vehicle.length || '-'}</p>
+                        <p><b>Velocidade Máxima na Atmosfera:</b> {vehicle.max_atmosphering_speed || '-'}</p>
+                        <p><b>Classe:</b> {vehicle.vehicle_class || '-'}</p>
+
+                        <ReturnButton to='/details'>Voltar</ReturnButton>
                     </li>
                 )}
-            </DetailsVehicles>
-            {/* Falta um Botão de Voltar */}
+            </DetailsPerPerson>
         </>
     );
 }

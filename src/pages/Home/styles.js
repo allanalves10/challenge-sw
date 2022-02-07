@@ -1,12 +1,5 @@
 import styled from 'styled-components';
-
-export const HomeColors = styled.h1`
-    color: var(--black);
-    text-shadow: 2px 2px var(--yellow);
-    text-align: center;
-    font-size: 3rem;
-    font-weight: bold;
-`;
+import card from './../../assets/capa.jpg';
 
 export const MessageError = styled.h2`
     color: var(--blue); 
@@ -39,17 +32,33 @@ export const Pagination = styled.div`
 
 export const PersonList = styled.ul`
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     color: black;
     grid-gap: 1rem;
     list-style: none;
     text-align: center;
     margin: 2rem 2rem 1rem;
 
+    @media (max-width: 1680px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (max-width: 1200px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+    
     li {
+        background-image: url(${card});
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 1rem;
         display: flex;
         flex-direction: column;
-        border-radius: 5px;
         padding: 20px;
         transition: box-shadow 0.2s;
 
@@ -57,9 +66,11 @@ export const PersonList = styled.ul`
             box-shadow: 0 0 0.5em var(--blue);
         }
 
-        h3 {
-            color: var(--black);
+        p {
+            font-size: 1.25rem;
             font-weight: bold;
+            line-height: 1.5rem;
+            text-align: center;
         }
     
         button {
@@ -96,16 +107,28 @@ export const PersonList = styled.ul`
 
 export const ContainerSearch = styled.div`
     display: flex; 
-    justify-content: right; 
-    margin: 2rem 2rem 0 0;
     gap: 10px;
+    justify-content: right; 
+    padding: 2rem 2rem 0 0;
+    width: 100%;
+
+    @media (max-width: 768px) {
+        justify-content: center;
+        padding: 2rem 0 0 0;
+    }
 
     input {
         border: 1px solid var(--blue);
         border-radius: 0.5rem 0 0 0.5rem;
-        height: 2rem;
+        height: 3rem;
+        font-size: 1.2rem;
         padding-left: 0.5rem;
-        width: 200px;
+        width: 300px;
+
+        @media (max-width: 768px) {
+            font-size: 1rem;
+            width: 250px;
+        }
 
         &:focus {
             outline: none;
@@ -125,14 +148,19 @@ export const ContainerSearch = styled.div`
     }
 
     button:last-child {
-        border: none;
+        background: var(--white);
+        border: 1px solid var(--blue);
         border-radius: 0 0.5rem 0.5rem 0;
-        width: 4rem;
+        color: var(--blue);
+        font-size: 1.2rem;
         font-weight: bold;
         transition: filter 0.2s;
-        background: var(--white);
-        color: var(--blue);
-        border: 1px solid var(--blue);
+        width: 5rem;
+
+        @media (max-width: 768px) {
+            font-size: 1rem;
+            width: 4rem;
+        }
 
         &:hover {
             filter: brightness(0.9)
