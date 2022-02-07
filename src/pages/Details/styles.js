@@ -96,7 +96,7 @@ export const DetailsPerson = styled.ul`
             text-shadow: 2px 2px var(--yellow);
             font-size: 2rem;
             font-weight: bold;
-            line-height: 1.5rem;
+            line-height: 2rem;
             text-align: center;
             padding: 2rem;
         }
